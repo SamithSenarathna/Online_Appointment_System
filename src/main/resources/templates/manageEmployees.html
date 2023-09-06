@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Employees & Jobs</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        section .card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .card .image {
+            flex: 0 0 150px;
+            height: 150px;
+            width: 150px;
+            border-radius: 50%;
+            background: #7d2ae8;
+            margin-right: 20px;
+            overflow: hidden;
+        }
+
+<!--        .card .image img {-->
+<!--            height: 100%;-->
+<!--            width: 100%;-->
+<!--            object-fit: cover;-->
+<!--            border-radius: 50%;-->
+<!--            border: 5px solid #fff;-->
+<!--        }-->
+
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-content h3 {
+            margin-bottom: 10px;
+            color: maroon;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f2f2f2;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <br><br><br>
+    <div>
+        <h2 class="text-center" style="color: maroon;">MANAGE EMPLOYEES</h2>
+    </div>
+    <div class="text-center">
+        <button type="button" class="btn btn-primary"><a th:href="@{/admin/employee/add}" style="color: white;">ADD NEW EMPLOYEE</a></button>
+    </div>
+    <div class="text-center" style="margin: 20px;">
+        <form th:action="@{/admin/manageEmployees}">
+            Branch:
+            <select name="keyword" id="keyword" th:value="${keyword}" required>
+                <option value=""></option>
+                <option value="Colombo">Colombo</option>
+                <option value="Kurunagala">Kurunagala</option>
+                <option value="Jaffna">Jaffna</option>
+                <option value="Gampaha">Gampaha</option>
+                <option value="Galle">Galle</option>
+                <option value="Kandy">Kandy</option>
+                <option value="Nugegoda">Nugegoda</option>
+            </select>
+            &nbsp;
+            <input type="submit" value="Search" class="btn btn-primary" />
+            &nbsp;
+            <a th:href="@{/admin/manageEmployees}"><input type="button" value="Clear" id="btnClear"  class="btn btn-secondary" /></a>
+        </form>
+    </div>
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper content">
+            <div class="swiper-slide card" th:each="employee, iStat : ${employees}" style="display: flex; justify-content: center; align-items: center;">
+                <img th:src="@{/appoImages/OIP.jpeg}"  src="../static/appoImages/OIP.jpeg" width="auto" height="70" class="d-inline-block align-top" alt=""/>
+                <div class="card-content">
+                    <h3 th:text="${iStat.index + 1} + '. ' + ${employee.employee_id}">1. Ash</h3>
+                    <p th:text="${employee.mobileNumber}">8273872562</p>
+                    <span>Branch:</span><p th:text="${employee.branch}">Kurunegala</p>
+                    <span>Job ID:</span><p th:text="${employee.job_id}">12</p>
+                    <span>Job Type:</span><p th:text="${employee.job_type}">Nissan</p>
+                    <div class="btn-container">
+                        <a th:href="@{/admin/employee/delete/{id}(id=${employee.id})}" class="btn btn-danger">Delete</a>
+                        <a th:href="@{/admin/employee/update/{id}(id=${employee.id})}" class="btn btn-warning">Update</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer" class="text-center" style="margin-top: 20px;">
+        <a th:href="@{/admin}" href="#" style="color: darkblue;">Home</a>
+    </div>
+</div>
+<!--<script type="text/javascript">-->
+<!--    function clearSearch() {-->
+<!--        window.location = "[@{/admin/manageEmployees}]";-->
+<!--    }-->
+<!--</script>-->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+</html>
